@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 10000;
 
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "https://loupio.netlify.app/"
+    "http://localhost:5173",        // développement
+    "https://ton-site.netlify.app"  // production (à remplacer plus tard)
   ]
 }));
 app.use(bodyParser.json());
