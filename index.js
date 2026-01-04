@@ -1,26 +1,36 @@
 import express from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
+import bodyParser from "body-parser";
 import userRoute from "./routes/userRoute.js";
 import db from "./config/Database.js";
 
-const connexion = db;
-
 const app = express();
+const PORT = process.env.PORT || 10000;
+
 app.use(cors());
 app.use(bodyParser.json());
 
-
 app.use(userRoute);
 
-
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => {
-  console.log("Port d'écoute: ", PORT);
+app.get("/", (req, res) => {
+  res.send("API Loupio opérationnelle");
 });
 
-connexion
-  .sync({ alter: true })
-  .then(() => { console.log("Base de donnée et table créés") })
-  .catch(error => console.log("Il y a une erreur lors de la création de la base de données et de la table: ", error))
+const startServer = async () => {
+  try {
+    await db.authenticate();
+    console.log("Connexion PostgreSQL réussie");
+
+    // ⚠️ À utiliser UNE SEULE FOIS, puis commenter
+    await db.sync();
+    console.log("Base de données synchronisée");
+
+    app.listen(PORT, () => {
+      console.log("Port d'écoute:", PORT);
+    });
+  } catch (error) {
+    console.error("Erreur au démarrage du serveur:", error.message);
+  }
+};
+
+startServer();
