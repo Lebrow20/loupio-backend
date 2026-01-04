@@ -7,7 +7,12 @@ import db from "./config/Database.js";
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://loupio.netlify.app/"
+  ]
+}));
 app.use(bodyParser.json());
 
 app.use(userRoute);
@@ -22,8 +27,9 @@ const startServer = async () => {
     console.log("Connexion PostgreSQL réussie");
 
     // ⚠️ À utiliser UNE SEULE FOIS, puis commenter
-    await db.sync();
+    /*await db.sync();
     console.log("Base de données synchronisée");
+    */
 
     app.listen(PORT, () => {
       console.log("Port d'écoute:", PORT);
