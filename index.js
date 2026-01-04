@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(userRoute);
 
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
   console.log("Port d'écoute: ", PORT);
